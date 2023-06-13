@@ -3,9 +3,10 @@ import os
 import pandas as pd
 from PIL import Image
 import numpy as np
-from config import *
+from app.config import *
 import tensorflow as tf
-from tensorflow.keras.preprocessing.image import ImageDataGenerator, img_to_array, load_img
+from keras.preprocessing.image import ImageDataGenerator
+from keras.utils import img_to_array, load_img
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 
