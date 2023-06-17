@@ -27,6 +27,7 @@ class PreprocessImage:
         self.df.to_csv(SKU_CATLOG_CSV_PATH, index=False)
 
     def normalize_image(self, image, label, aug_cnt):
+        #as base line i am just consider doing normalization, we may also using grey scale in future incase if we face problem of lighting effect on product image taken, but also consider there can be a products which might have only color different
 
         image = image / 255.0  # Normalize pixel values
         # if label == '0':
@@ -71,8 +72,9 @@ class PreprocessImage:
 
         preprocessed_images = np.array(preprocessed_images)
         labels = np.array(labels)
+
         print(preprocessed_images.shape, labels.shape)
         np.save(SKU_CATLOG_AUGMENTED_IMAGE_ARRAY_PATH, labels)
-        np.save(SKU_CATLOG_AUGMENTED_LABEL_ARRAY_PATH, labels)
+        np.save(SKU_CATLOG_AUGMENTED_LABEL_ARRAY_PATH, tf.keras.utils.to_categorical(labels))
         print(np.unique(labels))
         return preprocessed_images, labels
