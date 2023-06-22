@@ -9,3 +9,4 @@ Repo for Hackathon 4.0 team 4
 
 # References:
 1. [Towards Data Science article on out of stock detection](https://towardsdatascience.com/training-a-custom-yolov7-in-pytorch-and-running-it-directly-in-the-browser-with-tensorflow-js-96a5ecd7a530)
+2. [Github repo used in the above link](https://towardsdatascience.com/training-a-custom-yolov7-in-pytorch-and-running-it-directly-in-the-browser-with-tensorflow-js-96a5ecd7a530)

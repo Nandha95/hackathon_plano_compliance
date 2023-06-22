@@ -8,6 +8,8 @@ SKU_CATLOG_CSV_PATH = "app/data/processed_data/sku_catlog.csv"
 
 SKU_CATLOG_AUGMENTED_IMAGE_ARRAY_PATH = 'app/data/processed_data/sku_catalog_processed.npy'
 SKU_CATLOG_AUGMENTED_LABEL_ARRAY_PATH = 'app/data/processed_data/sku_catalog_label_processed.npy'
+
+SEGMENTATION_MODEL_PATH = 'app/data/models/yolov7/saved_model.pb'
 # variables
 IMAGE_PATH = "image_path"
 LABEL = "class"
