@@ -5,3 +5,5 @@ tensorflow==2.12.0
 matplotlib==3.7.1
 tqdm==4.65.0
 opencv-python==4.7.0.72
+onnxruntime
+onnx

@@ -9,7 +9,8 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras.utils import img_to_array, load_img
 from tqdm import tqdm
 import matplotlib.pyplot as plt
-
+import cv2
+from typing import Tuple
 
 class PreprocessImage:
     def create_dataframe_from_directory(self):
@@ -77,3 +78,33 @@ class PreprocessImage:
         np.save(SKU_CATLOG_AUGMENTED_LABEL_ARRAY_PATH, labels)
         print(np.unique(labels))
         return preprocessed_images, labels
+    @staticmethod
+    def resize_and_pad(
+            image: np.ndarray,
+            new_shape: (int, int),
+    ) -> Tuple[np.ndarray, float, (int, int)]:
+        border_color = (114, 114, 114)
+        # Resize and pad image while meeting stride-multiple constraints
+        shape = image.shape[:2]  # current shape [height, width]
+        if isinstance(new_shape, int):
+            new_shape = (new_shape, new_shape)
+
+        # Scale ratio (new / old)
+        r = min(new_shape[0] / shape[0], new_shape[1] / shape[1])
+
+        # Compute padding
+        new_unpad = int(round(shape[1] * r)), int(round(shape[0] * r))
+
+        dw, dh = new_shape[1] - new_unpad[0], new_shape[0] - new_unpad[1]  # wh padding
+
+        dw /= 2  # divide padding into 2 sides
+        dh /= 2
+
+        if shape[::-1] != new_unpad:  # resize
+            image = cv2.resize(image, new_unpad, interpolation=cv2.INTER_LINEAR)
+        top, bottom = int(round(dh - 0.1)), int(round(dh + 0.1))
+        left, right = int(round(dw - 0.1)), int(round(dw + 0.1))
+        image = cv2.copyMakeBorder(
+            image, top, bottom, left, right, cv2.BORDER_CONSTANT, value=border_color
+        )  # add border
+        return image, r, (dw, dh)
