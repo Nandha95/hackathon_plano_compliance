@@ -162,3 +162,7 @@ cython_debug/
 # all intermeditate unnecessary files
 app/data/temp
 app/data/input/sku_catalog_augment
+app/data/input/images
+app/data/input/labels
+app/data/processed_data
+.idea/
