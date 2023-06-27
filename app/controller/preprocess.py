@@ -78,11 +78,12 @@ class PreprocessImage:
         np.save(SKU_CATLOG_AUGMENTED_LABEL_ARRAY_PATH, labels)
         print(np.unique(labels))
         return preprocessed_images, labels
+
     @staticmethod
     def resize_and_pad(
             image: np.ndarray,
-            new_shape: (int, int),
-    ) -> Tuple[np.ndarray, float, (int, int)]:
+            new_shape: Tuple[int, int],
+    ) -> Tuple[np.ndarray, float, Tuple[int, int]]:
         border_color = (114, 114, 114)
         # Resize and pad image while meeting stride-multiple constraints
         shape = image.shape[:2]  # current shape [height, width]
