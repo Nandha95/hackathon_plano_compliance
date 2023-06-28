@@ -74,7 +74,7 @@ class PreprocessImage:
         labels = np.array(labels)
 
         print(preprocessed_images.shape, labels.shape)
-        np.save(SKU_CATLOG_AUGMENTED_IMAGE_ARRAY_PATH, labels)
+        np.save(SKU_CATLOG_AUGMENTED_IMAGE_ARRAY_PATH, preprocessed_images)
         np.save(SKU_CATLOG_AUGMENTED_LABEL_ARRAY_PATH, tf.keras.utils.to_categorical(labels))
         print(np.unique(labels))
         return preprocessed_images, labels
