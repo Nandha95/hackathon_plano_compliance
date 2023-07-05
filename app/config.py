@@ -1,5 +1,5 @@
-# from pathlib import Path
-BASE_PATH = "."
+from pathlib import Path
+BASE_PATH = Path.cwd()
 
 
 SKU_CATLOG_PATH = "app/data/input/sku_catalog/"

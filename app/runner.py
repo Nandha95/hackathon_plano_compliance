@@ -35,10 +35,10 @@ def run_detection():
 
 
 if __name__=="__main__":
-    # 
+    #
     train = sys.argv[0] if sys.argv[1]=="1" else False
     if train:
-        preprocess_image(train) 
+        preprocess_image(train)
     else:
         run_detection()
         x,image_paths = preprocess_image(train =False)
