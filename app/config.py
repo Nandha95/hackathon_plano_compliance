@@ -14,12 +14,12 @@ SKU_CATLOG_AUGMENTED_IMAGE_ARRAY_PATH = 'app/data/processed_data/sku_catalog_pro
 SKU_CATLOG_AUGMENTED_LABEL_ARRAY_PATH = 'app/data/processed_data/sku_catalog_label_processed.npy'
 
 # OBJECT DETECTION CONFIGS
-DETECTION_MODEL_PATH = BASE_PATH.joinpath('data/models/yolov7/yolov7-tiny.onnx')
+DETECTION_MODEL_PATH = BASE_PATH.joinpath('app/data/models/yolov7/yolov7-0.1.onnx')
 print(BASE_PATH)
 print(DETECTION_MODEL_PATH)
 DETECTION_TARGET_SIZE = (640, 640)
 DETECTION_NAMES = ['object']
-DETECTION_OUTPUT_PATH =  BASE_PATH.joinpath('data/processed_data/detections')
+DETECTION_OUTPUT_PATH =  BASE_PATH.joinpath('app/data/processed_data/detections')
 
 
 # variables

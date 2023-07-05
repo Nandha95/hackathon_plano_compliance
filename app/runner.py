@@ -12,7 +12,8 @@ def preprocess_image():
 
 def run_detection():
     image = cv2.imread("data/input/train_shelf_images/train1.jpg")
-    obj = DetectorModel(
+    obj = DetectorModel()
+    obj.add_image(
         image,
         new_shape=DETECTION_TARGET_SIZE
     )

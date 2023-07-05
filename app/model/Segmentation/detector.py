@@ -1,3 +1,4 @@
+import random
 import onnxruntime as rt
 import numpy as np
 import cv2
@@ -12,21 +13,17 @@ class DetectorModel:
     1. Runs object detection on the image.
     2. Gets the bounding boxes of the detected objects
     """
-    session = rt.InferenceSession(DETECTION_MODEL_PATH)
-    input_name = [i.name for i in session.get_inputs()]  # Name of the input node of the model.
-    output_name = [i.name for i in session.get_outputs()]  # Name of the output node of the model.
-
     def __init__(
-            self,
-            image: np.ndarray,
-            new_shape
+            self
     ) -> None:
         """
-        :param image: The numpy array of the image on which object detection will be done. Needs to be a
-        cv2 image, as cv2 operations will be performed on the image.
+
         """
-        self.image = image
-        self.new_shape = new_shape
+        self.session = None
+        self.input_name = None
+        self.output_name = None
+        self.image = None
+        self.new_shape = None
         self.ratio = None  # The width:height ratio of the image after being scaled.
         self.dw_dh = None  # The new width and height of the image after being scaled.
         self.image_array = None
@@ -34,6 +31,21 @@ class DetectorModel:
         self.output = None  # The output used by the model. This is not the same as output_name defined above
         self.detections = []
         self.cropped_images = []
+
+    def load_model(self, path: str):
+        self.session = rt.InferenceSession(path)
+        self.input_name = [i.name for i in self.session.get_inputs()]  # Name of the input node of the model.
+        self.output_name = [i.name for i in self.session.get_outputs()]  # Name of the output node of the model.
+
+    def add_image(self, image: np.ndarray, new_shape):
+        """
+        :param image: The numpy array of the image on which object detection will be done. Needs to be a
+        cv2 image, as cv2 operations will be performed on the image.
+        :param new_shape: The new shape of the image to which the image must be resized to.
+        :return:
+        """
+        self.image = image
+        self.new_shape = new_shape
 
     def preprocess_image(
             self
@@ -43,7 +55,7 @@ class DetectorModel:
         :return:
         """
         image = cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
-        image = self.image.copy()
+        # image = image.copy()
         image, self.ratio, self.dw_dh = PreprocessImage.resize_and_pad(image, new_shape=self.new_shape)
         image = image.transpose((2, 0, 1))
         image = np.expand_dims(image, 0)
@@ -109,6 +121,25 @@ class DetectorModel:
         :return:
         """
         return np.array(self.cropped_images)
+
+    def image_with_bounding_boxes(self) -> np.ndarray:
+        ori_image = self.image.copy()
+        for i, detection in enumerate(self.detections):
+            coords = detection['coords']
+            print(f"{i}:{coords}")
+            name = detection['name'] + ' ' + str(detection['score'])
+            cv2.rectangle(ori_image, coords[:2], coords[2:], [random.randint(0, 255) for _ in range(3)], 2)
+            cv2.putText(
+                ori_image,
+                name,
+                (coords[0], coords[1] - 2),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.75,
+                [225, 255, 255],
+                thickness=2
+            )
+        return ori_image
+
 
     def save_image(self) -> None:
         """
