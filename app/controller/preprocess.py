@@ -71,12 +71,12 @@ class PreprocessImage:
         np.save(SKU_CATLOG_AUGMENTED_IMAGE_ARRAY_PATH, preprocessed_images)
         np.save(SKU_CATLOG_AUGMENTED_LABEL_ARRAY_PATH, tf.keras.utils.to_categorical(labels))
         print(np.unique(labels))
-    def preprocess_test_data(self):
+    def preprocess_test_data(self,PATH):
         preprocessed_images = []
         image_paths = []
-        for filename in os.listdir(DETECTION_OUTPUT_PATH):
+        for filename in os.listdir(PATH):
             if filename.endswith(".jpg") or filename.endswith(".png") or filename.endswith(".JPG"):
-                image_path = os.path.join(DETECTION_OUTPUT_PATH, filename)
+                image_path = os.path.join(PATH, filename)
                 image = load_img(
                 image_path, target_size=TARGET_SIZE)
                 image_array = img_to_array(image)

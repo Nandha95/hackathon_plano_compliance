@@ -16,7 +16,7 @@ def preprocess_image(train=False):
         model = construct_model()
         train_model(model, X_train,y_train,X_test, y_test)
     else:
-        return obj.preprocess_test_data()
+        return obj.preprocess_test_data(PATH = DETECTION_OUTPUT_PATH)
 def run_detection():
     image = cv2.imread("app/data/input/train_shelf_images/train1.jpg")
     obj = DetectorModel(
@@ -40,6 +40,7 @@ if __name__=="__main__":
         preprocess_image(train) 
     else:
         run_detection()
+
         x,image_paths = preprocess_image(train =False)
         predictions = predict(x)
         label = [predictions[i].argmax() for i in range(predictions.shape[0])]
