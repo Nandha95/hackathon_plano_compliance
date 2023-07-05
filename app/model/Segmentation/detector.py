@@ -17,17 +17,13 @@ class DetectorModel:
     input_name = [i.name for i in session.get_inputs()]  # Name of the input node of the model.
     output_name = [i.name for i in session.get_outputs()]  # Name of the output node of the model.
 
-    def __init__(
-            self,
-            image: np.ndarray,
-            new_shape
-    ) -> None:
+    def __init__(self) -> None:
         """
         :param image: The numpy array of the image on which object detection will be done. Needs to be a
         cv2 image, as cv2 operations will be performed on the image.
         """
-        self.image = image
-        self.new_shape = new_shape
+        self.image = None
+        self.new_shape = None
         self.ratio = None  # The width:height ratio of the image after being scaled.
         self.dw_dh = None  # The new width and height of the image after being scaled.
         self.image_array = None
@@ -35,6 +31,12 @@ class DetectorModel:
         self.output = None  # The output used by the model. This is not the same as output_name defined above
         self.detections = []
         self.cropped_images = []
+        self.output_path = None
+
+    def add_image(self, image: np.ndarray, new_shape, output_path):
+        self.image = image
+        self.new_shape = new_shape
+        self.output_path = output_path
 
     def preprocess_image(
             self
@@ -94,7 +96,7 @@ class DetectorModel:
             try:
                 self.cropped_images.append(self.image[coords[1]:coords[3], coords[0]:coords[2]])
             except Exception as e:
-                print(f"Unable to crop detection {i}, with boxes: {box}")
+                print(f"Unable to crop detection {i}, with boxes: {coords}")
                 print(e)
 
     def detection_array(self) -> np.ndarray:
@@ -113,7 +115,7 @@ class DetectorModel:
 
     def save_detection_pickle(self) -> None:
         ""
-        with open(DETECTION_OUTPUT_PATH+'/detections.pickle', 'wb') as pickle_file:
+        with open(self.output_path+'/detections.pickle', 'wb') as pickle_file:
             pickle.dump(self.detections, pickle_file)
 
     def save_image(self) -> None:
@@ -127,6 +129,8 @@ class DetectorModel:
                 # cv2.waitKey(0)
                 # output_file_path = DETECTION_OUTPUT_PATH.joinpath(f"image_{i}.jpg")
                 # # print(output_file_path)
-                cv2.imwrite(DETECTION_OUTPUT_PATH+f"/image_{i}.jpg", image)
+                cv2.imwrite(self.output_path+f"/image_{i}.jpg", image)
             except Exception as e:
                 print(f"Could not save image {i}: {e}")
+
+

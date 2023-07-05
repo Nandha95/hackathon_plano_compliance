@@ -18,9 +18,8 @@ def preprocess_image(train=False):
     else:
         return obj.preprocess_test_data(PATH = DETECTION_OUTPUT_PATH)
 def run_detection():
-    image = cv2.imread("data/input/train_shelf_images/train1.jpg")
-    obj = DetectorModel()
-    obj.add_image(
+    image = cv2.imread("app/data/input/train_shelf_images/train1.jpg")
+    obj = DetectorModel(
         image,
         new_shape=DETECTION_TARGET_SIZE
     )
@@ -35,20 +34,24 @@ def run_detection():
 
 
 if __name__=="__main__":
-    #
+    # 
     train = sys.argv[0] if sys.argv[1]=="1" else False
     if train:
-        preprocess_image(train)
+        preprocess_image(train) 
     else:
         run_detection()
+
         x,image_paths = preprocess_image(train =False)
         predictions = predict(x)
         label = [predictions[i].argmax() for i in range(predictions.shape[0])]
         prob = [predictions[i][label[i]] for i in range(predictions.shape[0])]
         image_coords = pickle.load(open(DETECTION_OUTPUT_PATH+'/detections.pickle','rb'))
         for l,path,prob in zip(label, image_paths,prob):
-            # print(path.split('_')[-1].split('.')[0],l,p)
             ind = int(path.split('_')[-1].split('.')[0])
-            image_coords[ind]['name'] = str(l)
-            image_coords[ind]['score'] = str(prob)
+            try:
+            # print(path.split('_')[-1].split('.')[0],l,p)
+                image_coords[ind]['name'] = str(l)
+                image_coords[ind]['score'] = str(prob)
+            except IndexError:
+                print(l, path, prob, ind)
         print(image_coords)
