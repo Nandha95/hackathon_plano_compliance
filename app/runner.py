@@ -5,12 +5,18 @@ from app.model.Segmentation.detector import DetectorModel
 import pickle
 import cv2
 from app.config import *
-def preprocess_image():
+from app.model.sku_classifier.EffiecientNet import load_data,construct_model,train_model,predict
+def preprocess_image(train=False):
     obj = PreprocessImage()
-    obj.create_dataframe_from_directory()
-    # Preprocess the training data (with data augmentation)
-    obj.preprocess_data(augmentation=True)
-
+    if train:
+        # obj.create_dataframe_from_directory()
+        # Preprocess the training data (with data augmentation)
+        # obj.preprocess_data(augmentation=True)
+        X_train, X_test, y_train, y_test = load_data()
+        model = construct_model()
+        train_model(model, X_train,y_train,X_test, y_test)
+    else:
+        return obj.preprocess_test_data(PATH = DETECTION_OUTPUT_PATH)
 def run_detection():
     image = cv2.imread("data/input/train_shelf_images/train1.jpg")
     obj = DetectorModel()
@@ -46,5 +52,3 @@ if __name__=="__main__":
             image_coords[ind]['name'] = str(l)
             image_coords[ind]['score'] = str(prob)
         print(image_coords)
-    # preprocess_image()
-    run_detection()
