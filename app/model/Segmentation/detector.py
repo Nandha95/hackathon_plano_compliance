@@ -5,6 +5,7 @@ from app.config import DETECTION_MODEL_PATH, DETECTION_NAMES, DETECTION_OUTPUT_P
 from app.controller.preprocess import PreprocessImage
 from typing import Tuple
 from pathlib import Path
+import pickle
 
 class DetectorModel:
     """
@@ -109,6 +110,11 @@ class DetectorModel:
         :return:
         """
         return np.array(self.cropped_images)
+
+    def save_detection_pickle(self) -> None:
+        ""
+        with open(DETECTION_OUTPUT_PATH.joinpath('detections.pickle'), 'wb') as pickle_file:
+            pickle.dump(self.detections, pickle_file)
 
     def save_image(self) -> None:
         """
