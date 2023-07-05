@@ -5,6 +5,7 @@ from app.config import DETECTION_MODEL_PATH, DETECTION_NAMES, DETECTION_OUTPUT_P
 from app.controller.preprocess import PreprocessImage
 from typing import Tuple
 from pathlib import Path
+import pickle
 
 class DetectorModel:
     """
@@ -110,6 +111,11 @@ class DetectorModel:
         """
         return np.array(self.cropped_images)
 
+    def save_detection_pickle(self) -> None:
+        ""
+        with open(DETECTION_OUTPUT_PATH+'/detections.pickle', 'wb') as pickle_file:
+            pickle.dump(self.detections, pickle_file)
+
     def save_image(self) -> None:
         """
         TODO: Method to save the cropped images after detection
@@ -121,6 +127,6 @@ class DetectorModel:
                 # cv2.waitKey(0)
                 # output_file_path = DETECTION_OUTPUT_PATH.joinpath(f"image_{i}.jpg")
                 # # print(output_file_path)
-                cv2.imwrite(str(DETECTION_OUTPUT_PATH.joinpath(f"image_{i}.jpg")), image)
+                cv2.imwrite(DETECTION_OUTPUT_PATH+f"/image_{i}.jpg", image)
             except Exception as e:
                 print(f"Could not save image {i}: {e}")

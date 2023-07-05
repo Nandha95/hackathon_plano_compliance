@@ -28,7 +28,7 @@ class PreprocessImage:
         self.df = pd.DataFrame({IMAGE_PATH: image_paths, LABEL: labels})
         self.df.to_csv(SKU_CATLOG_CSV_PATH, index=False)
 
-    def normalize_image(self, image, label, aug_cnt):
+    def normalize_image(self, image, label=None, aug_cnt=None):
 
         image = image / 255.0  # Normalize pixel values
         # if label == '0':
@@ -64,21 +64,27 @@ class PreprocessImage:
                         augmented_image[0], image_class, i)
                     preprocessed_images.append(preprocessed_image)
                     labels.append(image_class)
-            else:
-                # Preprocessing for test data
-                preprocessed_image = self.preprocess_image(
-                    image_array)
-                preprocessed_images.append(preprocessed_image)
-                labels.append(image_class)
 
         preprocessed_images = np.array(preprocessed_images)
         labels = np.array(labels)
         print(preprocessed_images.shape, labels.shape)
-        np.save(SKU_CATLOG_AUGMENTED_IMAGE_ARRAY_PATH, labels)
-        np.save(SKU_CATLOG_AUGMENTED_LABEL_ARRAY_PATH, labels)
+        np.save(SKU_CATLOG_AUGMENTED_IMAGE_ARRAY_PATH, preprocessed_images)
+        np.save(SKU_CATLOG_AUGMENTED_LABEL_ARRAY_PATH, tf.keras.utils.to_categorical(labels))
         print(np.unique(labels))
-        return preprocessed_images, labels
-
+    def preprocess_test_data(self,PATH):
+        preprocessed_images = []
+        image_paths = []
+        for filename in os.listdir(PATH):
+            if filename.endswith(".jpg") or filename.endswith(".png") or filename.endswith(".JPG"):
+                image_path = os.path.join(PATH, filename)
+                image = load_img(
+                image_path, target_size=TARGET_SIZE)
+                image_array = img_to_array(image)
+                preprocessed_image = self.normalize_image(
+                    image_array)
+                preprocessed_images.append(preprocessed_image)
+                image_paths.append(image_path)
+        return np.array(preprocessed_images),image_paths
     @staticmethod
     def resize_and_pad(
             image: np.ndarray,
