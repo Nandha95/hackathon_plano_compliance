@@ -121,6 +121,6 @@ class DetectorModel:
                 # cv2.waitKey(0)
                 # output_file_path = DETECTION_OUTPUT_PATH.joinpath(f"image_{i}.jpg")
                 # # print(output_file_path)
-                cv2.imwrite(str(DETECTION_OUTPUT_PATH.joinpath(f"image_{i}.jpg")), image)
+                cv2.imwrite(DETECTION_OUTPUT_PATH+f"/image_{i}.jpg", image)
             except Exception as e:
                 print(f"Could not save image {i}: {e}")
