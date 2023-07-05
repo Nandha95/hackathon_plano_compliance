@@ -19,7 +19,7 @@ print(BASE_PATH)
 print(DETECTION_MODEL_PATH)
 DETECTION_TARGET_SIZE = (640, 640)
 DETECTION_NAMES = ['object']
-DETECTION_OUTPUT_PATH =  BASE_PATH.joinpath('data/processed_data/detections')
+DETECTION_OUTPUT_PATH = BASE_PATH.joinpath('data/processed_data/detections')
 
 
 # variables
