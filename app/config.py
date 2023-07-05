@@ -1,6 +1,6 @@
-from pathlib import Path
-BASE_PATH = Path.cwd()
-BASE_OUTPUT_PATH = BASE_PATH.joinpath('app/data/output')
+# from pathlib import Path
+BASE_PATH = "."
+
 
 SKU_CATLOG_PATH = "app/data/input/sku_catalog/"
 # SKU_CATLOG_AUGMENTED_PATH = "app/data/input/sku_catalog_augment/"
@@ -19,16 +19,16 @@ print(BASE_PATH)
 print(DETECTION_MODEL_PATH)
 DETECTION_TARGET_SIZE = (640, 640)
 DETECTION_NAMES = ['object']
-
+DETECTION_OUTPUT_PATH =  'app/data/processed_data/detections'
 # variables
 IMAGE_PATH = "image_path"
 LABEL = "class"
-TARGET_SIZE = (224, 224)
+TARGET_SIZE = (60, 60)
 AUGMENT_COUNT = 216
 
 train_test_ratio = .75
 SKU_CATLOG_SIZE = 39
-checkpoint_path = "app/data/model/classifier/run3/cp-EffiecientNet-{epoch:04d}.ckpt"
+checkpoint_path = "app/data/model/classifier/run_4/cp-EffiecientNet-{epoch:04d}.ckpt"
 model_path = "app/data/models/classifier/"
 final_model_path = "app/data/models/classifier/cp-EffiecientNet-0006.ckpt"
 # checkpoint_dir = os.path.dirname(checkpoint_path)
