@@ -2,6 +2,7 @@ import sys
 sys.path.append(".")  # nopep8
 from app.controller.preprocess import PreprocessImage
 from app.model.Segmentation.detector import DetectorModel
+import pickle
 import cv2
 from app.config import *
 from app.model.sku_classifier.EffiecientNet import load_data,construct_model,train_model,predict
@@ -41,6 +42,12 @@ if __name__=="__main__":
         run_detection()
         x,image_paths = preprocess_image(train =False)
         predictions = predict(x)
-        label = [predictions[i].argmax() for i in predictions.shape[0]]
-        for l,p in zip(label, image_paths):
-            print(l,p)
+        label = [predictions[i].argmax() for i in range(predictions.shape[0])]
+        prob = [predictions[i][label[i]] for i in range(predictions.shape[0])]
+        image_coords = pickle.load(open(DETECTION_OUTPUT_PATH+'/detections.pickle','rb'))
+        for l,path,prob in zip(label, image_paths,prob):
+            # print(path.split('_')[-1].split('.')[0],l,p)
+            ind = int(path.split('_')[-1].split('.')[0])
+            image_coords[ind]['name'] = str(l)
+            image_coords[ind]['score'] = str(prob)
+        print(image_coords)
