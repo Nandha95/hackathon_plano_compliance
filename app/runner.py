@@ -2,6 +2,7 @@ import sys
 sys.path.append(".")  # nopep8
 from app.controller.preprocess import PreprocessImage
 from app.model.Segmentation.detector import DetectorModel
+import pickle
 import cv2
 from app.config import *
 def preprocess_image():
@@ -28,5 +29,22 @@ def run_detection():
 
 
 if __name__=="__main__":
+    # 
+    train = sys.argv[0] if sys.argv[1]=="1" else False
+    if train:
+        preprocess_image(train) 
+    else:
+        run_detection()
+        x,image_paths = preprocess_image(train =False)
+        predictions = predict(x)
+        label = [predictions[i].argmax() for i in range(predictions.shape[0])]
+        prob = [predictions[i][label[i]] for i in range(predictions.shape[0])]
+        image_coords = pickle.load(open(DETECTION_OUTPUT_PATH+'/detections.pickle','rb'))
+        for l,path,prob in zip(label, image_paths,prob):
+            # print(path.split('_')[-1].split('.')[0],l,p)
+            ind = int(path.split('_')[-1].split('.')[0])
+            image_coords[ind]['name'] = str(l)
+            image_coords[ind]['score'] = str(prob)
+        print(image_coords)
     # preprocess_image()
     run_detection()

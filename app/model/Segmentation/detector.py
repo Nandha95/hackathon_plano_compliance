@@ -125,7 +125,7 @@ class DetectorModel:
 
     def save_detection_pickle(self) -> None:
         ""
-        with open(DETECTION_OUTPUT_PATH.joinpath('detections.pickle'), 'wb') as pickle_file:
+        with open(DETECTION_OUTPUT_PATH+'/detections.pickle', 'wb') as pickle_file:
             pickle.dump(self.detections, pickle_file)
 
     def image_with_bounding_boxes(self) -> np.ndarray:
