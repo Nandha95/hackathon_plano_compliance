@@ -1,6 +1,6 @@
 from pathlib import Path
 BASE_PATH = Path.cwd()
-
+BASE_OUTPUT_PATH = BASE_PATH.joinpath('app/data/output')
 
 SKU_CATLOG_PATH = "app/data/input/sku_catalog/"
 # SKU_CATLOG_AUGMENTED_PATH = "app/data/input/sku_catalog_augment/"
@@ -19,7 +19,7 @@ print(BASE_PATH)
 print(DETECTION_MODEL_PATH)
 DETECTION_TARGET_SIZE = (640, 640)
 DETECTION_NAMES = ['object']
-DETECTION_OUTPUT_PATH =  'app/data/processed_data/detections'
+
 # variables
 IMAGE_PATH = "image_path"
 LABEL = "class"
