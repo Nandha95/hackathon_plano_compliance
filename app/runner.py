@@ -22,7 +22,8 @@ def run_detection():
     obj.process_detection()
     obj.crop_images()
     detection_labels = obj.detection_array()
-    detection_iamges = obj.cropped_image_array()
+    detection_images = obj.cropped_image_array()
+    obj.save_detection_pickle()
     obj.save_image()
 
 
