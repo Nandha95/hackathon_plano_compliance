@@ -10,6 +10,7 @@ import time
 from app.model.Segmentation.detector import DetectorModel
 from app.controller.preprocess import PreprocessImage
 from app.model.sku_classifier.EffiecientNet import predict
+from app.model.sku_classifier.SIFT import find_similar_images
 from app.config import *
 import pandas as pd
 
@@ -36,7 +37,9 @@ def draw_on_image(image, detections) -> np.ndarray:
         boxes = detection['coords']
         score = detection['score']
         # print(f"{i}:{coords}")
-        name = f'{detection["name"]}'
+        name = ('NA' if detection['name']== 'object'  else detection['name'] )+ ' ' + '{p:.2f}'.format(p=float(detection['score']))
+        if name == 'object':
+            continue
         cv2.rectangle(ori_image, boxes[:2], boxes[2:], [random.randint(0, 255) for _ in range(3)], 2)
         cv2.putText(
             ori_image,
